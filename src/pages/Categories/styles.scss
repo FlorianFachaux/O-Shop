@@ -1,0 +1,143 @@
+@use '../../styles/vars';
+
+.categories {
+  &__container {
+    background-color: vars.$secondRed;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    min-height:100vh;
+  }
+
+  &__title {
+    margin-left: 5rem;
+    background-color: vars.$secondRed;
+    font-size: 4rem;
+    font-weight: 700;
+    padding: 3rem 0;
+    color: vars.$font-color;
+  }
+
+  &__card {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    transition: transform 0.3s;
+    width: 25rem;
+    transition: 0.3s;
+    background-color: vars.$secondRed;
+    color: vars.$font-color;
+    border-radius: 20px;
+    padding: 1.2rem 0 1.1rem 0;
+    border: 5px solid vars.$mainRed;
+    &:hover {
+      scale: 1.1;
+      rotate: 2deg;
+      transition: 0.3s;
+      border-radius: 20px;
+      box-shadow: 3px 3px 10px black;
+    }
+
+    &--wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 4rem;
+      align-self: center;
+      padding-bottom: 5rem;
+    }
+    &--title {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 2rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    &--description {
+      font-size: 1.2rem;
+      padding: 0.2rem 0.4rem;
+      text-align: center;
+      margin: 0 auto;
+    }
+    &--elem {
+      color: vars.$font-color;
+      & :hover {
+        color: vars.$font-color;
+      }
+    }
+  }
+}
+
+/* For large-sized screens */
+@media screen and (max-width: 1700px) {
+  .categories {
+    &__container {
+      width: 100%;
+      padding: 0 4rem;
+    }
+  }
+}
+
+@media screen and (max-width: 1450px) {
+  .categories__card--wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For medium-sized screens */
+@media screen and (max-width: 980px) {
+  .categories__card--wrap {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .categories__card {
+    margin-bottom: 1.5rem;
+  }
+  .categories__title {
+    text-align: center;
+    margin-left: 0;
+  }
+}
+
+/* For small-sized screens */
+@media screen and (max-width: 780px) {
+  .categories {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    &__card {
+      width: 22rem;
+      margin-bottom: 1.5rem;
+    }
+    &__title {
+      text-align: center;
+      font-size: 3.2rem;
+    }
+    &__card--wrap {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-gap: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .categories {
+    &__container{
+    margin:0;
+    padding: 0;
+  }
+    &__card {
+      width: 16rem;
+      text-align: center;
+    }
+    
+    &__card h3 {
+      font-size: 1.4rem;
+    }
+    &__card p {
+      font-size: 1rem;
+    }
+  }
+}

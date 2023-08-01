@@ -1,0 +1,82 @@
+@use './../../styles/vars';
+
+.form {
+  display: flex;
+  justify-content: center;
+  &__control {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #f1f1f1;
+    border-radius: 8px;
+    max-width: 40rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+  &__title {
+    text-align: center;
+    font-size: 4rem;
+    margin-bottom: 1.6rem;
+  }
+  &__group {
+    display: contents;
+  }
+  input,
+  textarea {
+    padding: 1rem;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+  }
+  &__submit {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    background: vars.$mainBlue;
+    color: vars.$font-color;
+    transition: 0.5s;
+    letter-spacing: 0.2rem;
+    font-family: vars.$font-family;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background: #e74c3c;
+      transition: 0.5s;
+      scale: 1.1;
+      box-shadow: 2px 3px 4px black;
+    }
+  }
+  @media (max-width: 720px) {
+    &__control {
+      padding: 1rem;
+      max-width: 30rem;
+    }
+
+    &__title {
+      font-size: 3.5rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.8rem;
+    }
+  }
+  @media (max-width: 520px) {
+    &__control {
+      max-width: 25rem;
+    }
+
+    &__title {
+      font-size: 3rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.8rem;
+    }
+  }
+}

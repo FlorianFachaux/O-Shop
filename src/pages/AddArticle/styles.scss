@@ -1,0 +1,137 @@
+@use './../../styles/vars';
+
+.addArticle {
+  background-color: vars.$pageBlue;
+  color: vars.$font-color;
+  &__title {
+    font-size: 4rem;
+    padding: 4rem;
+    font-weight: bold;
+    color: vars.$mainBlue;
+  }
+  & form {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 3rem;
+  }
+  &__grid {
+    display: grid;
+    margin: 0 auto;
+    width: fit-content;
+    text-align: center;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    grid-column-gap: 4rem;
+    grid-row-gap: 1rem;
+  }
+
+  &__grid p {
+    font-size: 2rem;
+    padding: 0.4rem;
+    background-color: vars.$headerBlue;
+    border-radius: 15px;
+    box-shadow: 1px 1px 2px black;
+  }
+
+  &__grid input {
+    font-size: 2rem;
+    width: 26rem;
+    text-align: center;
+    border-radius: 15px;
+    border: none;
+    font-style: italic;
+    border: 2px solid vars.$mainBlue;
+  }
+
+  &__submitForm {
+    font-size: 2rem;
+    margin: 1rem auto;
+    padding: 0.8rem 2rem;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 1px 1px 2px black;
+    color: vars.$font-color;
+    background-color: vars.$mainBlue;
+    transition: 0.3s;
+  }
+  &__submitForm:hover {
+    scale: 1.1;
+    box-shadow: 2px 3px 4px black;
+  }
+  &__category-select {
+    font-size: 2rem;
+    width: 26rem;
+    text-align: center;
+    border-radius: 14px;
+    border: 2px solid vars.$mainBlue;
+  }
+  &__added-message {
+    font-size: 2rem;
+    text-align: center;
+    padding: 1rem;
+  }
+  &__added-message--isHidden {
+    display: none;
+  }
+
+}
+.message__access-denied{
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 10rem;
+}
+@media screen and (max-width: 950px) {
+  .addArticle {
+    &__title {
+      text-align: center;
+    }
+
+    &__grid {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // Hide left column display
+  .addArticle__grid > div:nth-child(odd) p {
+    display: none;
+  }
+}
+
+.bigScreenSize {
+  display: none;
+}
+
+.smallScreenSize {
+  display: inline;
+}
+
+@media screen and (max-width: 580px) {
+  .addArticle {
+    &__title {
+      font-size: 3rem;
+    }
+
+    &__grid input {
+      width: 16rem;
+      font-size: 1.6rem;
+    }
+
+    &__category-select {
+      font-size: 1.6rem;
+      width: 16rem;
+    }
+  }
+}
+
+// Needed to switch input (espacially the placeholder) beetween big and small screen
+@media screen and (min-width: 951px) {
+  .bigScreenSize {
+    display: inline;
+  }
+
+  .smallScreenSize {
+    display: none;
+  }
+}

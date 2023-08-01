@@ -1,0 +1,91 @@
+@use '../../styles/vars';
+
+// Form container
+.form {
+  display: flex;
+  background-color: vars.$pageBlue;
+  color: vars.$mainBlue;
+  text-align: center;
+  justify-content: center;
+  padding: 3rem 0 10rem 0;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+  }
+  // Form title
+  &__title {
+    font-size: 5rem;
+    font-weight: 800;
+    padding: 1.5rem 0;
+  }
+  //Form subtitle
+  &__subtitle {
+    font-size: 3rem;
+    font-weight: 400;
+    padding: 3rem 0;
+  }
+  &__input--firstname,
+  &__input--lastname,
+  &__input--email,
+  &__input--password,
+  &__input--button,
+  &__input--address,
+  &__input--phone {
+    width: 25rem;
+    height: 3rem;
+    margin-top: 1rem;
+    font-family: vars.$font-family;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 2px solid vars.$mainBlue;
+    border-radius: 15px;
+    background: vars.$font-color;
+    font-weight: 600;
+
+    &:active {
+      border: 3px solid vars.$mainBlue;
+    }
+  }
+  //Input button
+  &__input--button {
+    width: 15rem;
+    font-size: 1.3rem;
+    text-align: center;
+    background: vars.$mainBlue;
+    color: vars.$font-color;
+    transition: 0.1s;
+    letter-spacing: 0.2rem;
+    margin: 2rem 0;
+
+    &:hover {
+      transition: 0.3s;
+      scale: 1.1;
+      box-shadow: 2px 3px 4px black;
+    }
+  }
+  &__message {
+
+    font-size: 1.8rem;
+    color: vars.$mainBlue;
+    &__message--already-exists {
+      color: red;
+    }
+
+    &__message--success {
+      color: blue;
+    }
+  }
+}
+// responsive
+@media only screen and (max-width: 770px) {
+  .form {
+    &__input--email,
+    &__input--password,
+    &__input--firstname,
+    &__input--lastname {
+      width: 20rem;
+    }
+  }
+}

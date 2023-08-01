@@ -1,0 +1,140 @@
+@use '../../styles/vars';
+
+.main {
+  background-color: vars.$secondGreen;
+  color: vars.$font-color;
+  text-align: center;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+  &__container {
+    margin: 0 auto;
+  }
+  &__title {
+    letter-spacing: 4px;
+    font-size: 7rem;
+    font-weight: 800;
+    padding: 4rem 0 2.5rem 0;
+    text-transform: uppercase;
+
+    & span {
+      font-size: 8rem;
+    }
+  }
+  &__text--item {
+    font-size: 2.2rem;
+    margin: auto;
+    padding: 2em 2em;
+    max-width: 37.5em;
+    text-align: center;
+    line-height: 2.5rem;
+  }
+
+  // ----Cards section----
+  &__cards {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5rem 0 8rem 0;
+    align-items: center;
+  }
+  &__card {
+    padding: 1.5rem 0.2rem;
+    transition: 1s ease-out;
+
+    &:hover {
+      scale: 1.1;
+      transition: 1s ease-out;
+    }
+  }
+  &__card--title {
+    padding: 0.7rem 0 0.7rem 0;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.2rem;
+  }
+  &__card--text {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  &__card--img {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+  }
+  &__card--wrap {
+    background: rgba(21, 16, 0, 0.12);
+    border-radius: 100%;
+    content: '';
+    width: 72px;
+    height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+  // ----Cards section----
+}
+
+/* For medium-sized screens */
+@media screen and (max-width: 1064px) {
+  .main {
+    &__title {
+      font-size: 5.65rem;
+    }
+    &__text--item {
+      font-size: 1.415rem;
+    }
+    &__cards {
+      display: flex;
+      flex-direction: column;
+    }
+    &__card--title {
+      font-size: 0.94rem;
+    }
+    &__card--text {
+      font-size: 0.94rem;
+    }
+  }
+}
+
+/* For small screens */
+@media screen and (max-width: 790px) {
+  .main {
+    &__title {
+      font-size: 4.23rem;
+    }
+    &__text--item {
+      font-size: 1.175rem;
+    }
+    &__card--title {
+      font-size: 0.75rem;
+    }
+    &__card--text {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+/* For extra-small screens */
+@media screen and (max-width: 520px) {
+  .main {
+    &__title {
+      font-size: 3rem;
+    }
+    &__text--item {
+      font-size: 1.05rem;
+      line-height: 1.6rem;
+    }
+    &__cards {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    &__card--title {
+      font-size: 0.8rem;
+    }
+    &__card--text {
+      font-size: 0.8rem;
+    }
+  }
+}

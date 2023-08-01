@@ -1,0 +1,290 @@
+@use '../../styles/vars';
+
+.checkout {
+  align-items: center;
+  background-color: vars.$secondGreen;
+  color: vars.$font-color;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+
+  &__userAddress {
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    background-color: vars.$mainGreen;
+    padding: 0.6rem;
+    gap: 1rem;
+    border-radius: 10px;
+  }
+
+  &__title {
+    margin-top: 3rem;
+    font-size: 4rem;
+    font-weight: 800;
+  }
+
+  &__subtitle {
+    font-size: 3rem;
+    font-weight: 400;
+    padding: 2.5rem 0;
+  }
+
+  &__table {
+    background-color: vars.$mainGreen;
+    text-align: center;
+    font-weight: 500;
+    width: 50rem;
+    box-shadow: 2px 2px 8px black;
+    & th,
+    td {
+      padding: 1rem;
+      border: 1px solid;
+    }
+
+    & tbody tr:nth-child(odd) {
+      background-color: vars.$secondGreen;
+    }
+    & th,
+    tfoot {
+      border: 1px solid vars.$font-color;
+      border: 1px solid vars.$font-color;
+      font-weight: bold;
+      font-size: 1.2rem;
+      background-color: vars.$mainGreen;
+    }
+  }
+  &__waiting-modal--isHidden {
+    display: none;
+  }
+
+  &__waiting-modal--isVisible {
+    margin-top: 50%;
+    width: 20rem;
+    z-index: inherit;
+    position: absolute;
+    display: inline;
+    font-size: 5rem;
+  }
+
+  &__paiment-form h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid vars.$font-color;
+    border-radius: 20px;
+    padding: 0.8rem;
+  }
+
+  &__success-modal--isHidden {
+    display: none;
+  }
+
+  &__waiting-modal--background {
+    height: 2rem;
+    width: 20rem;
+  }
+
+  &__success-modal--isVisible {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 29rem;
+    height: 25rem;
+    background-color: vars.$mainGreen;
+    margin-bottom: 4rem;
+    border-radius: 10px;
+  }
+
+  &__success-modal--success-card {
+    font-size: 1.4rem;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 5rem;
+    align-items: center;
+    color: gold;
+    width: 80%;
+    line-height: 1.6rem;
+  }
+
+  &__paiment-form--input {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    width: 16rem;
+    border-radius: 8px;
+    border: none;
+  }
+  &__success-modal--success-textAndIcon {
+    font-size: 4rem;
+  }
+
+  &__success-modal--isVisible {
+    width: 100%;
+    font-size: 2rem;
+  }
+  &__Paiement-container--isHidden {
+    display: none;
+  }
+
+  &__Paiement-container--isVisible {
+    display: block;
+  }
+}
+.cgv {
+  font-weight: 600;
+  text-decoration: underline;
+}
+.modal {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    &--subtitle {
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+  }
+}
+.form-container {
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  background-color: vars.$mainGreen;
+  padding: 1rem;
+  border-radius: 20px;
+  margin-bottom: 3rem;
+  border: 1px solid vars.$mainBlue;
+}
+
+.spinner {
+  width: 150px; /* control the size */
+  aspect-ratio: 1;
+  display: grid;
+  -webkit-mask: conic-gradient(from 22deg, #0003, #000);
+  mask: conic-gradient(from 22deg, #0003, #000);
+  animation: load 1s steps(8) infinite;
+}
+.spinner,
+.spinner:before {
+  --_g: linear-gradient(#17177c 0 0) 50%; /* update the color here */
+  background: var(--_g) / 34% 8% space no-repeat,
+    var(--_g) / 8% 34% no-repeat space;
+}
+.spinner:before {
+  content: '';
+  transform: rotate(45deg);
+}
+@keyframes load {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.holderAndCardNumber {
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.form-container p {
+  margin-left: 2rem;
+  margin-bottom: 0.4rem;
+}
+
+.expiryAndCVC {
+  display: flex;
+  gap: 1rem;
+}
+
+.expiryAndCVC input {
+  width: 10rem;
+}
+
+#paymentSubmit {
+  display: flex;
+  justify-content: center;
+  background-color: vars.$mainBlue;
+  color: vars.$font-color;
+  width: 10rem;
+  margin: 1rem auto;
+  height: 3rem;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 2rem;
+}
+
+#paymentSubmit:hover {
+  transition: 0.3s;
+  scale: 1.1;
+  box-shadow: 2px 3px 4px black;
+}
+
+input.input-error,
+select.input.input-error {
+  border: 2px solid red;
+  border-radius: 10px;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  margin-top: -0.8rem;
+  color: rgb(255, 109, 109);
+  padding-left: 1rem;
+}
+
+.error-message__checkbox {
+  font-size: 1.2rem;
+  color: rgb(255, 109, 109);
+  margin-top: 0.3rem;
+}
+
+.fontAwesome-successIcon {
+  margin-left: 3rem;
+}
+
+@media screen and (max-width: 900px) {
+  .checkout {
+    &__table {
+      width: 30rem;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .checkout {
+    &__table {
+      width: 100%;
+    }
+  }
+
+  .checkout .checkout__userAddress {
+    font-size: 1.4rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fontAwesome-successIcon {
+    display: flex;
+    margin-top: 3rem;
+
+    justify-content: center;
+  }
+
+  .form-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .expiryAndCVC {
+    flex-direction: column;
+  }
+}

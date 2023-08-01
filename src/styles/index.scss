@@ -1,0 +1,19 @@
+@use 'reset';
+@use 'vars';
+
+@font-face {
+  font-family: 'Brandon Grotesque';
+  src: url('BrandonGrotesque-Thin.eot');
+  src: local('Brandon Grotesque Thin'), local('BrandonGrotesque-Thin'),
+      url('BrandonGrotesque-Thin.eot?#iefix') format('embedded-opentype'),
+      url('BrandonGrotesque-Thin.woff2') format('woff2'),
+      url('BrandonGrotesque-Thin.woff') format('woff'),
+      url('BrandonGrotesque-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Brandon Grotesque';
+
+}

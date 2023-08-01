@@ -1,0 +1,135 @@
+@use '../../../styles/vars';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  color: vars.$font-color;
+  font-size: 1.1rem;
+  align-items: center;
+  height: 7rem;
+  background-color: vars.$mainGreen;
+
+  &__logo {
+    height: 7rem;
+    padding: 0.8rem;
+  }
+
+  &__nav {
+    padding: 1rem;
+
+    &--item {
+      padding: 0.8rem;
+      margin: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15rem;
+      border-radius: 10px;
+      transition: 0.3s;
+      position: relative;
+      &:hover {
+        transition: 0.3s;
+        color: white;
+        background: vars.$mainBlue;
+        border-radius: 10px;
+      }
+    }
+    & #signup {
+      border: 2px solid vars.$font-color;
+      border-radius: 1.5rem;
+
+      &:hover {
+        background-color: #151000;
+        border: 2px solid white;
+      }
+    }
+  }
+}
+#logout{
+  &:hover{
+  background-color: #151000;}
+  border: 2px solid vars.$font-color;
+}
+.item-count {
+  position: absolute;
+  display: inline-block;
+  margin-left: 5px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  background-color: vars.$mainRed;
+  padding: 0.2rem 0.3rem 0.2rem 0.5rem;
+  border-radius: 50%;
+}
+
+.item-count__number {
+  display: inline-block;
+  font-weight: bold;
+  /* Styles for the item count number */
+}
+
+// RESPONSIVE HEADER
+
+@media only screen and (max-width: 1120px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    height: 11.5rem;
+    padding: 0.3rem;
+    font-size: 1.2rem;
+    &__nav {
+      &--item {
+        font-size: 0.8rem;
+        margin: 0.5rem;
+      }
+    }
+    &__logo {
+      padding: 1rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .header {
+    display: flex;
+    flex-direction: row;
+    &__nav {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 1rem;
+
+      &--item {
+        font-size:0.7rem;
+        margin:0;
+        padding:0.2rem;
+        text-align: center;
+      }
+    }
+
+    &__logo {
+      height: 7rem;
+    }
+  }
+  .cart__link{
+    display: inline;
+  }
+  .account__link{
+    display: inline;
+  }
+}
+@media only screen and (max-width: 440px) {
+  .header {
+    display: flex;
+    flex-direction: row;
+    &__nav {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      grid-gap: 0.5rem;
+
+      &--item {
+        font-size:0.7rem;
+        margin:0;
+        padding:0.2rem;
+        text-align: center;
+      }
+    }
+  } 
+}
