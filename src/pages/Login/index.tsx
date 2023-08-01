@@ -3,6 +3,7 @@ import { FormEvent, useState } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import userSchema from '../../utils';
+import { Link } from 'react-router-dom';
 
 interface LoginProps {
   handleLogin: (isLogged: boolean) => void;
@@ -89,6 +90,7 @@ function Login({ handleLogin }: LoginProps) {
           Me Connecter
         </button>
         {error && <p className="login__error">{error}</p>}
+        <Link to="/signup" className="redirect">Pas encore inscrit ?</Link>
       </form>
     </div>
   );

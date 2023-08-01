@@ -2,7 +2,7 @@
 
 .checkout {
   align-items: center;
-  background-color: vars.$secondGreen;
+  background-color: vars.$secondColor;
   color: vars.$font-color;
   margin: 0 auto;
   display: flex;
@@ -14,7 +14,7 @@
     font-size: 1.6rem;
     display: flex;
     flex-direction: column;
-    background-color: vars.$mainGreen;
+    background-color: vars.$mainColor;
     padding: 0.6rem;
     gap: 1rem;
     border-radius: 10px;
@@ -33,7 +33,7 @@
   }
 
   &__table {
-    background-color: vars.$mainGreen;
+    background-color: vars.$mainColor;
     text-align: center;
     font-weight: 500;
     width: 50rem;
@@ -45,7 +45,7 @@
     }
 
     & tbody tr:nth-child(odd) {
-      background-color: vars.$secondGreen;
+      background-color: vars.$secondColor;
     }
     & th,
     tfoot {
@@ -53,7 +53,7 @@
       border: 1px solid vars.$font-color;
       font-weight: bold;
       font-size: 1.2rem;
-      background-color: vars.$mainGreen;
+      background-color: vars.$mainColor;
     }
   }
   &__waiting-modal--isHidden {
@@ -93,7 +93,7 @@
     justify-content: center;
     max-width: 29rem;
     height: 25rem;
-    background-color: vars.$mainGreen;
+    background-color: vars.$mainColor;
     margin-bottom: 4rem;
     border-radius: 10px;
   }
@@ -154,7 +154,7 @@
   font-size: 1.6rem;
   display: flex;
   flex-direction: column;
-  background-color: vars.$mainGreen;
+  background-color: vars.$mainColor;
   padding: 1rem;
   border-radius: 20px;
   margin-bottom: 3rem;

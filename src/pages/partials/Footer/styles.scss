@@ -1,17 +1,14 @@
 @use '../../../styles/vars';
 
 .footerContainer {
-  background-color: #151000;
+  background-color: vars.$mainColor;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 10rem;
-  color: vars.$font-color;
+  color: white;
   font-weight: 400;
-}
-
-.logo {
-  height: 4rem;
+  height:8.5vh;
 }
 
 .icon {

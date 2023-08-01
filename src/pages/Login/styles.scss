@@ -1,33 +1,7 @@
 @use '../../styles/vars';
 
-//form container
-.form {
-  display: flex;
-  background-color: #ffffff;
-  color: vars.$font-color;
-  text-align: center;
-  justify-content: center;
-  padding-top: 3rem;
-  min-height: 100vh;
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 20%;
-  }
-  //form title
-  &__title {
-    font-size: 4rem;
-    font-weight: 800;
-    padding: 1rem 0;
-  }
-  //form subtitle
-  &__subtitle {
-    font-size: 3rem;
-    font-weight: 400;
-    padding: 2.5rem 0;
-  }
-
+.form{
+  height:84vh;
   .input-error,
   select.input-error {
     border-width: 2px;
@@ -37,36 +11,7 @@
   .input-valid {
     border-color: initial;
   }
-
-  &__input--email,
-  &__input--password,
-  &__input--button {
-    width: 25rem;
-    height: 3rem;
-    margin-top: 1rem;
-    font-family: vars.$font-family;
-    font-size: 1.5rem;
-    text-align: center;
-    border: 2px solid vars.$mainBlue;
-    border-radius: 15px;
-    background: vars.$font-color;
-    font-weight: 600;
-  }
-  &__input--button {
-    width: 10rem;
-    font-size: 1.3rem;
-    margin-top: 3rem;
-    background: vars.$mainBlue;
-    color: vars.$font-color;
-    transition: 0.1s;
-    letter-spacing: 0.2rem;
-
-    &:hover {
-      transition: 0.3s;
-      scale: 1.1;
-      box-shadow: 2px 3px 4px black;
-    }
-  }
+  
   .login__error {
     color: red;
     font-size: 1rem;
@@ -76,15 +21,16 @@
     background-color: vars.$pageBlue;
   }
 }
+.redirect{
+  &:hover{
+    color:red;
+    transition: 0.3s linear; 
+  }
+}
 
 @media only screen and (max-width: 770px) {
-  .form {
-    &__input--email,
-    &__input--password {
-      width: 20rem;
-    }
-
-    .login__error {
+    .form{
+      .login__error {
       color: red;
       font-size: 1rem;
       font-weight: 400;

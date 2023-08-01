@@ -3,11 +3,11 @@
 // Form container
 .form {
   display: flex;
-  background-color: vars.$pageBlue;
-  color: vars.$mainBlue;
+  background-color: #DAFBF1;
+  color: vars.$mainColor;
   text-align: center;
   justify-content: center;
-  padding: 3rem 0 10rem 0;
+  
   &__container {
     display: flex;
     flex-direction: column;
@@ -39,30 +39,26 @@
     font-family: vars.$font-family;
     font-size: 1.5rem;
     text-align: center;
-    border: 2px solid vars.$mainBlue;
     border-radius: 15px;
-    background: vars.$font-color;
     font-weight: 600;
+    border:2px solid vars.$mainColor;
 
-    &:active {
-      border: 3px solid vars.$mainBlue;
-    }
   }
   //Input button
   &__input--button {
     width: 15rem;
     font-size: 1.3rem;
     text-align: center;
-    background: vars.$mainBlue;
-    color: vars.$font-color;
+    background-color: #9381FF;
+    color: white;
     transition: 0.1s;
     letter-spacing: 0.2rem;
     margin: 2rem 0;
+    border:none;
 
     &:hover {
       transition: 0.3s;
       scale: 1.1;
-      box-shadow: 2px 3px 4px black;
     }
   }
   &__message {

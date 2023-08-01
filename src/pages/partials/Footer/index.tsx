@@ -14,7 +14,6 @@ function Footer() {
   };
   return (
     <div className="footerContainer">
-      <img className="logo" src={whiteLogo} alt="" />
       <div className="textAndIcons">
         <div className="text">
           <p>Nous contacter:</p>

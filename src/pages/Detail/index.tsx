@@ -139,38 +139,42 @@ const [showModal, setShowModal] = useState<boolean>(false);
     }
   };
   
-
+  const [showAddedToCart, setShowAddedToCart] = useState(false);
   // On gère l'ajout de l'article dans le panier
   const handleAddToCart = () => {
     dispatch({ type: 'ADD', payload: detail });
     setAddedToCart(true);
+
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 3500);
   };
 
   return (
-    <div className="article">
+    <div className="detail">
       {detail && (
       <>
-        <div className="article__leftSide">
-          <img className="article__image" src={articleImage} alt="article" />
-        </div><div className="article__rightSide">
-            <h1 className="article__title">{articleName}</h1>
-            <p className="article__excerpt">
+        <div className="detail__leftSide">
+          <img className="detail__image" src={articleImage} alt="article" />
+        </div><div className="detail__rightSide">
+            <h1 className="detail__title">{articleName}</h1>
+            <p className="detail__excerpt">
               {articleExcerpt}
             </p>
-            <p className="article__description">
+            <p className="detail__description">
               {articleDescription}
             </p>
-            <p className="article__price">
+            <p className="detail__price">
               Prix :
               {' '}
               {articlePrice}
               €
             </p>
-            <button onClick={handleAddToCart} type="button" className="article__button">
+            <button onClick={handleAddToCart} type="button" className="detail__button">
               Ajouter au panier
             </button>
-            {addedToCart && <p className="article__added">Ajouté au panier</p>}
           </div>
+          {addedToCart && <p className="detail__added">Ajouté au panier</p>}
       </>
       )}
       {isAdmin && (

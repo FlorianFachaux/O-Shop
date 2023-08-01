@@ -13,10 +13,10 @@ function Homepage() {
           &apos;Shop
         </h1>
         <p className="main__text--item">
-          Bienvenue sur O&apos;Shop, LA boutique 100% O&apos;Clock !
+          Bienvenue sur O&apos;Shop, LA boutique 100% Développeur !
           <br />
-          Que tu sois un ancien, futur ou actuel apprenant, un enseignant de l&apos;école
-          ou aspirant au développement web:
+          Que tu sois Freelance, employé, Front, Back, Fullstack
+          ou simplement aspirant au développement web:
           Ne bouge pas, tu es au bon endroit !
           <br />
           Un seul objectif : te faire plaisir !

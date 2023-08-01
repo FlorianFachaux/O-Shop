@@ -35,23 +35,19 @@ function Article({ article }: ArticleProps) {
   }, [article.id]);
 
   return (
-    <>
-      <div className="articles__card">
-        <img className="articles__card--image" src={articleData?.image} alt="card" />
-        <h2 className="articles__card--title">{articleData?.article_name}</h2>
-        <div className="articles__card--price">
-          {articleData?.price}
-          {' '}
-          €
-        </div>
-        <div className="articles__cards--icons-wrap">
-          <FontAwesomeIcon onClick={addToCart} className='articles__cards--icon fa-xl'  icon={faShoppingCart} />
-          <Link to={`/articles/${article.id}`} rel="stylesheet">
-          <FontAwesomeIcon className='articles__cards--icon fa-lg' icon={faSearch} />
-          </Link>
-        </div>
-      </div>
-    </>
+    <Link to={`/articles/${article.id}`}>
+      <article className="article">
+        <img src={articleData?.image} alt="Photo du produit" className="article__card-image" />
+        <section className="article__card-detail">
+          <h3 className="article__card-title">{articleData?.article_name}</h3>
+          <p className="article__card-price">
+            {articleData?.price}
+            {' '}
+            €</p>
+            <button className="article__card-button" onClick={addToCart}>Ajouter au panier</button>
+        </section>
+      </article>
+    </Link>
   );
 }
 

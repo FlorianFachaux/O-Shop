@@ -1,17 +1,16 @@
-@use '../../styles/vars';
+.articles{
+  display: flex;
+  min-height:84vh;
+  flex-direction: column;
+  padding-bottom: 3rem;
+  background-color: #DAFBF1;
 
-.articles {
-  background-color: vars.$secondYellow;
-  color: vars.$font-color;
-  text-align: center;
-  min-height: 100vh;
-  padding: 0 5rem 5rem 5rem;
-
-  &__container {
+  &__container{
     width: 100%;
     display: grid;
     flex-direction: column;
     justify-content: center;
+    
   }
   &__title {
     font-size: 4rem;
@@ -22,113 +21,8 @@
   &__card-wrap {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 4rem;
+    grid-gap: 2rem;
     align-self: center;
     padding-top: 2rem;
-  }
-  //   Product Card
-  &__card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 22rem;
-    background-color: vars.$mainYellow;
-    border-radius: 20px;
-    transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
-    margin-right: 1.5em;
-    padding-top: 0.5rem;
-    &:hover {
-      color: vars.$font-color;
-      text-decoration: none;
-      transform: scale(1.05) rotate(1deg);
-      box-shadow: 5px 5px 6px black;
-    }
-    &--image {
-      width: 21rem;
-      height: 19rem;
-      object-fit: cover;
-      border-radius: 20px;
-    }
-    &--title,
-    &--price {
-      padding: 1rem 0 1rem 1rem;
-    }
-    &--title {
-      font-size: 1.8rem;
-      font-weight: 500;
-    }
-    &--price {
-      font-size: 1.5rem;
-      font-weight: 400;
-    }
-  }
-}
-.link__addArticle {
-  font-size: 2rem;
-  background-color: vars.$mainBlue;
-  width: 18rem;
-  padding: 0.5rem;
-}
-
-/* For extra-large-sized screens */
-@media screen and (max-width: 1700px) {
-  .articles {
-    &__container {
-      width: 100%;
-      padding: 0 4rem;
-    }
-    &__card-wrap {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-}
-
-/* For large-sized screens */
-@media screen and (max-width: 1280px) {
-  .articles__card-wrap {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .articles__title {
-    text-align: center;
-  }
-}
-
-/* For medium-sized screens */
-@media screen and (max-width: 900px) {
-  .articles__card-wrap {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .articles__title {
-    text-align: center;
-  }
-}
-
-/* For small-sized screens */
-@media screen and (max-width: 780px) {
-  .articles {
-    padding: 0;
-    .articles__container {
-      padding: 0;
-    }
-
-    &__card {
-      width: 17rem;
-      margin: 2rem 0 4rem 0;
-      &--image {
-        width: 16rem;
-        height: 14rem;
-        object-fit: cover;
-        border-radius: 20px;
-      }
-    }
-    &__title {
-      text-align: center;
-      font-size: 3.2rem;
-    }
-    &__card-wrap {
-      display: inline-block;
-      padding: 0;
-      margin: 0 auto;
-    }
   }
 }

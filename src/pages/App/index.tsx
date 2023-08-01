@@ -2,12 +2,11 @@ import './styles.scss';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import { CartContext } from '../../context/Context';
-import Header, { HeaderProvider } from '../partials/Header';
+import Header from '../partials/Header';
 import Footer from '../partials/Footer';
 import Homepage from '../Homepage';
 import Login from '../Login';
 import Signup from '../Signup';
-import Categories from '../Categories';
 import Articles from '../Articles';
 import Account from '../Account';
 import Cart from '../Cart';
@@ -50,12 +49,9 @@ function App() {
   return (
     <div className="app">
       <div className="app-content">
-        <HeaderProvider>
-          <Header isLogged={isLogged} handleLogout={handleLogout} />
-        </HeaderProvider>
+        <Header isLogged={isLogged} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/categories" element={<Categories />} />
           <Route path="/articles" element={<Articles />} />
           <Route
             path="/articles/category/:category_slug"

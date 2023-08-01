@@ -1,7 +1,7 @@
 @use '../../styles/vars';
 
 .main {
-  background-color: vars.$secondGreen;
+  background-color: #DAFBF1;
   color: vars.$font-color;
   text-align: center;
   padding-bottom: 3rem;
@@ -11,17 +11,16 @@
   }
   &__title {
     letter-spacing: 4px;
-    font-size: 7rem;
+    font-size: 5rem;
     font-weight: 800;
-    padding: 4rem 0 2.5rem 0;
-    text-transform: uppercase;
+    padding: 6rem 0 2.5rem 0;
 
     & span {
-      font-size: 8rem;
+      font-size: 6rem;
     }
   }
   &__text--item {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     margin: auto;
     padding: 2em 2em;
     max-width: 37.5em;
@@ -41,14 +40,13 @@
     transition: 1s ease-out;
 
     &:hover {
-      scale: 1.1;
-      transition: 1s ease-out;
+      scale: 1.05;
+      transition: 0.5s ease-out;
     }
   }
   &__card--title {
     padding: 0.7rem 0 0.7rem 0;
-    text-transform: uppercase;
-    font-weight: 900;
+    font-weight: 800;
     font-size: 1.2rem;
   }
   &__card--text {
@@ -61,7 +59,7 @@
     height: 48px;
   }
   &__card--wrap {
-    background: rgba(21, 16, 0, 0.12);
+    background: rgb(21, 16, 0);
     border-radius: 100%;
     content: '';
     width: 72px;
