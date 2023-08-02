@@ -78,18 +78,17 @@ function App() {
                 path="/account"
                 element={<Account handleLogout={handleLogout} />}
               />
-              <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
             </>
           )}
           {/* if the user isnt logged in ans try to access account or cart, redirect to the Login page */}
           {!isLogged && (
             <>
-              <Route path="/cart" element={<Navigate to="/login" />} />
               <Route path="/account" element={<Navigate to="/login" />} />
+              <Route path="/checkout" element={<Navigate to="/login"/>} />
             </>
           )}
-          
+          <Route path="/cart" element={<Cart />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </div>

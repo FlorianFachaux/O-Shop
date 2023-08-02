@@ -40,7 +40,7 @@ function Header({ isLogged, handleLogout }: HeaderProps) {
         </NavLink>
         <Dropdown>
           <Dropdown.Toggle className="header__nav--item">
-            Catégorie
+            Catégories
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item as={NavLink} to="/articles/category/vetements" >
