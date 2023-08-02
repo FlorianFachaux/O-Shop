@@ -64,30 +64,30 @@ function Articles() {
   };
 
   // Filtrer les articles
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | 'az' | 'za'>('asc');
-  const [defaultSortOrder, setDefaultSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | 'az' | 'za' | ''>('');
 
 const customSort = (a: IArticle, b: IArticle) => {
   if (sortOrder === 'asc') {
     return (a.price || 0) - (b.price || 0);
   } else if (sortOrder === 'desc') {
     return (b.price || 0) - (a.price || 0);
-  } else if (sortOrder === 'az') {
-    return (a.article_name || '').localeCompare(b.article_name || '');
   } else if (sortOrder === 'za') {
+    return (a.article_name || '').localeCompare(b.article_name || '');
+  } else if (sortOrder === 'az') {
     return (b.article_name || '').localeCompare(a.article_name || '');
   }
   return 0;
 };
 
 const handleSortOrderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  const value = e.target.value as 'asc' | 'desc' | 'az' | 'za';
+  const value = e.target.value as 'asc' | 'desc' | 'az' | 'za' | '';
   setSortOrder(value);
 
-  let sortedArticles: IArticle[] = [...filteredArticles];
-  sortedArticles.sort(customSort);
-
-  setArticles(sortedArticles);
+  if (value !== '') {
+    let sortedArticles: IArticle[] = [...filteredArticles];
+    sortedArticles.sort(customSort);
+    setArticles(sortedArticles);
+  }
 };
 
   return (
@@ -109,11 +109,11 @@ const handleSortOrderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
               value={sortOrder}
               onChange={handleSortOrderChange}
             >
-              <option value="default">-- Aucun tri --</option>
+              <option value="default">-- Sélectionnez un filtre --</option>
               <option value="desc">Prix croissant</option>
               <option value="asc">Prix décroissant</option>
-              <option value="az">Nom Z-A</option>
-              <option value="za">Nom A-Z</option>
+              <option value="az">Nom A-Z</option>
+              <option value="za">Nom Z-A</option>
             </select>
             </div>
             <div className="articles__filters-searchbar">
