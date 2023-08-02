@@ -46,14 +46,17 @@ function Cart() {
   if (state.length === 0) {
     return (
       <section className="cart">
-        <div className="cart__container-empty">
-          <h2 className="cart__title-empty">Mon panier est vide</h2>
-          <Link to="/articles" className="cart__link-empty">
+        <div className="cart__container">
+          <h2 className="cart__container-empty">Mon panier est vide</h2>
+          <Link to="/articles" className="cart__container-links">
             Continuer mes achats
+          </Link>
+          <Link to="/Login" className="cart__container-links">
+            Me connecter
           </Link>
           <NavLink to="/categories">
             <button
-              className="cart__summary-button cart__button-empty"
+              className="cart__button-empty"
               type="button"
             >
               Trouver des articles
@@ -92,11 +95,6 @@ function Cart() {
                         src={article.image}
                         alt="article"
                       />
-                      <div className="cart__details-description-info">
-                        <div className="cart__details-description-info--item">
-                          <a href="#">{article.title}</a>
-                        </div>
-                      </div>
                     </div>
                     <div className="cart__details-quantity">
                       <div className="cart__details-quantity-items">
@@ -155,25 +153,24 @@ function Cart() {
               </div>
             </div>
           </form>
-          <div className="cart__summary">
+          <section className="cart__summary">
             {state.length > 0 && (
               <div className="cart__summary-wrap">
-                <h2 className="cart__summary-title">Recapitulatif</h2>
-                <div className="cart__summary-subtotal cart__summary-row">
+                <h2 className="cart__summary-title">Recapitulatif:</h2>
+                <div className="cart__summary-subtotal">
                   <div className="cart__summary--left">Panier</div>
-                  <div>{cartTotal}€</div>
+                  <div>{cartTotal} €</div>
                 </div>
-                <div className="cart__summary-delivery cart__summary-row">
+                <div className="cart__summary-delivery">
                   <div className="cart__summary--left">
-                    Frais de livraison estimés
+                    Frais de livraison estimés: 0 €
                   </div>
-                  <div>0</div>
                 </div>
                 <hr />
 
-                <div className="cart__summary-total cart__summary-row">
+                <div className="cart__summary-total">
                   <div className="cart__summary--item">Total</div>
-                  <div className="cart__summary--price">{cartTotal}$</div>
+                  <div className="cart__summary--price">{cartTotal} €</div>
                 </div>
               </div>
             )}
@@ -182,7 +179,7 @@ function Cart() {
                 Valider mon panier
               </Link>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
