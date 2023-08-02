@@ -15,7 +15,7 @@ function Articles() {
       try {
         let url = 'http://localhost:3000/articles';
         if (category_slug) {
-          url = `http://localhost:3000/articles/category/${category_slug}`;
+          url = `http://localhost:3000/articles/category/${encodeURIComponent(category_slug)}`;
         }
         const articlesResponse = await axios.get(url);
         setArticles(articlesResponse.data);
@@ -51,18 +51,84 @@ function Articles() {
 
     fetchUser();
   }, []);
+  // Rechercher un article par son nom
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredArticles = articles.filter((article) => {
+    const searchTerm = searchQuery.toLowerCase();
+    return article.article_name?.toLowerCase().includes(searchTerm);
+  });
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Filtrer les articles
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | 'az' | 'za'>('asc');
+  const [defaultSortOrder, setDefaultSortOrder] = useState<'asc' | 'desc'>('asc');
+
+const customSort = (a: IArticle, b: IArticle) => {
+  if (sortOrder === 'asc') {
+    return (a.price || 0) - (b.price || 0);
+  } else if (sortOrder === 'desc') {
+    return (b.price || 0) - (a.price || 0);
+  } else if (sortOrder === 'az') {
+    return (a.article_name || '').localeCompare(b.article_name || '');
+  } else if (sortOrder === 'za') {
+    return (b.article_name || '').localeCompare(a.article_name || '');
+  }
+  return 0;
+};
+
+const handleSortOrderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const value = e.target.value as 'asc' | 'desc' | 'az' | 'za';
+  setSortOrder(value);
+
+  let sortedArticles: IArticle[] = [...filteredArticles];
+  sortedArticles.sort(customSort);
+
+  setArticles(sortedArticles);
+};
+
   return (
     <section className="articles">
       <div className="articles__container">
-        <h1 className="articles__title">Produits</h1>
-        {/* The admin is able to go to addArticle */}
-        {isAdmin && (
-          <Link className="link__addArticle" to="/addArticle">
-            + Ajouter un article
-          </Link>
-        )}
+        <section className="articles__container-header">
+          <h1 className="articles__title">Produits</h1>
+          {isAdmin && (
+            <Link className="link__addArticle" to="/addArticle">
+              + Ajouter un article
+            </Link>
+          )}
+
+          <div className="articles__filters">
+          <div className="articles__sort-select">
+              <label htmlFor="sortOrderSelect">Filtrer par:</label>
+              <select
+              id="sortOrderSelect"
+              value={sortOrder}
+              onChange={handleSortOrderChange}
+            >
+              <option value="default">-- Aucun tri --</option>
+              <option value="desc">Prix croissant</option>
+              <option value="asc">Prix décroissant</option>
+              <option value="az">Nom Z-A</option>
+              <option value="za">Nom A-Z</option>
+            </select>
+            </div>
+            <div className="articles__filters-searchbar">
+            <input
+              className="articles__filters-research"
+              type="text"
+              placeholder="Rechercher un produit..."
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+            />
+            </div>
+          </div>
+        </section>
         <div className="articles__card-wrap ">
-          {articles.map((article) => (
+          {filteredArticles.map((article) => (
             <Article key={article.id} article={article} />
           ))}
         </div>
