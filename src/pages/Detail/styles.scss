@@ -93,25 +93,6 @@
     font-size: 1.5rem;
   }
 }
-.edit__button,
-.delete__button {
-  width: 10rem;
-  font-size: 1.3rem;
-  text-align: center;
-  background: vars.$mainBlue;
-  color: vars.$font-color;
-  transition: 0.1s;
-  letter-spacing: 0.2rem;
-  margin: 1rem 0;
-  padding: 0.5rem;
-  border-radius: 5px;
-
-  &:hover {
-    transition: 0.3s;
-    scale: 1.1;
-    box-shadow: 2px 3px 4px black;
-  }
-}
 
 @media screen and (max-width: 1500px) {
   .article {

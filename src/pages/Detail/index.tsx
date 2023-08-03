@@ -40,7 +40,6 @@ function Detail() {
     
   // Récupérer les informations de l'utilisateur connecté
   const [user, setUser] = useState<User | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     // On effectue la requête GET pour récupérer les données de l'utilisateur
@@ -53,7 +52,6 @@ function Detail() {
           },
         });
         setUser(response.data);
-        setIsAdmin(response.data.userConnected.isAdmin);
         console.log(response.data);
         console.log(response.data.userConnected.isAdmin);
       } catch (error) {
@@ -63,81 +61,7 @@ function Detail() {
 
     fetchUser();
   }, []);
-const [showModal, setShowModal] = useState<boolean>(false);
-
-  // Fermeture de la modal
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  // Gestion de la modification des données dans la modal
-  const handleEditData = async () => {
-    try {
-      const token = localStorage.getItem('token');
-
-      // Préparation des données avant l'envoi des données au Back
-      const articleData = {
-        article_name: detail?.article_name,
-        excerpt: detail?.excerpt,
-        description: detail?.description,
-        price: detail?.price,
-        image: detail?.image,
-      };
-      console.log(articleData);
-
-      // Envoi de la requête PATCH qui mettra les données à jour
-      await axios.patch(`http://localhost:3000/articles/${id}`, articleData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setDetail((prevDetail) => ({
-        ...prevDetail,
-        ...articleData
-      }));
-
-      // Mise à jour des données
-      setArticleName(articleName);
-      setArticleExcerpt(articleExcerpt);
-      setArticleDescription(articleDescription);
-      setArticleImage(articleImage);
-      setArticlePrice(articlePrice);
-
-      // Fermeture de la modal à l'envoi de la requête
-      handleCloseModal();
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Gestion de la suppression d'un article
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
-  const navigate = useNavigate();
-
-  const handleDeleteArticle = () => {
-    setShowConfirmationModal(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      const token = localStorage.getItem('token');
   
-      // On envoie la requête DELETE à la base de données
-      await axios.delete(`http://localhost:3000/articles/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      navigate('/articles');
-  
-    } catch (error) {
-      console.error(error);
-    }
-  };
   
   const [showAddedToCart, setShowAddedToCart] = useState(false);
   // On gère l'ajout de l'article dans le panier
@@ -177,102 +101,6 @@ const [showModal, setShowModal] = useState<boolean>(false);
           {addedToCart && <p className="detail__added">Ajouté au panier</p>}
       </>
       )}
-      {isAdmin && (
-        <div className="admin__buttons">
-          <button className='edit__button' onClick={() => setShowModal(true)}>Modifier</button>
-          <button className='delete__button' onClick={handleDeleteArticle}>Supprimer</button>
-        </div>
-      )}
-      {/* Modal de confirmation de suppression d'un article*/}
-      <Modal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)} className='modal'>
-        <Modal.Header closeButton className='modal__header'>
-          <Modal.Title>Confirmation de suppression</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='modal__body'>
-          Êtes-vous sûr de vouloir supprimer cet article ?
-        </Modal.Body>
-        <Modal.Footer className='modal__footer'>
-          <button className='modal__button' onClick={() => setShowConfirmationModal(false)}>
-            Annuler
-          </button>
-          <button className='modal__button' onClick={handleConfirmDelete}>
-            Supprimer
-          </button>
-        </Modal.Footer>
-      </Modal>
-      {/* Fin de la modal de confirmation de suppression */}
-      {/* Modal de Modification d'un article */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} className='modal'>
-        <Modal.Header className='modal__header' closeButton>
-          <Modal.Title>Modifier l'article</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className='modal__body'>
-          <label>Nom</label>
-          <input
-            type="text"
-            value={detail?.article_name || ''}
-            onChange={e => setDetail(prevDetail => ({
-              ...prevDetail,
-              article_name: e.target.value
-            }))}
-            className='modal__input'
-            placeholder={detail?.article_name || ''}
-          />
-          <label>Image (url)</label>
-          <input
-            type="text"
-            value={detail?.image || ''}
-            onChange={e => setDetail(prevDetail => ({
-              ...prevDetail,
-              image: e.target.value
-            }))}
-            className='modal__input'
-            placeholder={detail?.image || ''}
-          />
-          <label>Extrait</label>
-          <input
-            type="text"
-            value={detail?.excerpt || ''}
-            onChange={e => setDetail(prevDetail => ({
-              ...prevDetail,
-              excerpt: e.target.value
-            }))}
-            className='modal__input'
-            placeholder={detail?.excerpt || ''}
-          />
-          <label>Description</label>
-          <input
-            type="text"
-            value={detail?.description || ''}
-            onChange={e => setDetail(prevDetail => ({
-              ...prevDetail,
-              description: e.target.value
-            }))}
-            className='modal__input'
-            placeholder={detail?.description || ''}
-          />
-          <label>Prix</label>
-          <input
-            type="number"
-            value={detail?.price || 0}
-            onChange={e => setDetail(prevDetail => ({
-              ...prevDetail,
-              price: parseFloat(e.target.value)
-            }))}
-            className='modal__input'
-            placeholder={detail?.price?.toString() || ''}
-          />
-        </Modal.Body>
-        <Modal.Footer className='modal__footer'>
-          <button className='modal__button' onClick={() => setShowModal(false)}>
-            Annuler
-          </button>
-          <button className='modal__button' onClick={handleEditData}>
-            Enregistrer
-          </button>
-        </Modal.Footer>
-      </Modal>
-      {/* Fin de la modal de modification d'un article */}
     </div>
   );
 }

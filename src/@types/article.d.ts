@@ -7,6 +7,7 @@ interface IArticle {
   id?: number;
   category?: string;
   quantity?: number;
+  category_id?: string;
 }
 
 export interface ICategory {
