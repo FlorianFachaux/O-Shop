@@ -150,6 +150,13 @@
       border-radius: 4px;
       font-size: 16px;
       cursor: pointer;
+      transition: 0.3s linear;
+      &:hover{
+        background-color: #7860ff;
+        transition: 0.3s linear;
+        color:white;
+        scale: 1.1;
+      }
     }
   }
   &__quantity-input{

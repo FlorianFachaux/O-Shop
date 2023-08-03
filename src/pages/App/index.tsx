@@ -13,7 +13,8 @@ import Cart from '../Cart';
 import Detail from '../Detail';
 import Checkout from '../Checkout';
 import Error from '../Error';
-import AddArticle from '../AddArticle';
+import BackOfficePage from '../BackOffice';
+// import AddArticle from '../AddArticle';
 import axios from 'axios';
 
 function App() {
@@ -57,8 +58,12 @@ function App() {
             path="/articles/category/:category_slug"
             element={<Articles />}
           />
+          <Route
+            path="/admin"
+            element={<BackOfficePage />}
+          />
           <Route path="/articles/:id" element={<Detail />} />
-          <Route path="/addarticle" element={<AddArticle />} />
+          {/* <Route path="/addarticle" element={<AddArticle />} /> */}
           <Route
             path="/login"
             element={

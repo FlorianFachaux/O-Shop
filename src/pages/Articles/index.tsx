@@ -95,12 +95,6 @@ const handleSortOrderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       <div className="articles__container">
         <section className="articles__container-header">
           <h1 className="articles__title">Produits</h1>
-          {isAdmin && (
-            <Link className="link__addArticle" to="/addArticle">
-              + Ajouter un article
-            </Link>
-          )}
-
           <div className="articles__filters">
           <div className="articles__sort-select">
               <label htmlFor="sortOrderSelect">Filtrer par:</label>

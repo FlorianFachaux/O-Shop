@@ -54,7 +54,7 @@ function Cart() {
           <Link to="/Login" className="cart__container-links">
             Me connecter
           </Link>
-          <NavLink to="/categories">
+          <NavLink to="/articles">
             <button
               className="cart__button-empty"
               type="button"

@@ -100,7 +100,7 @@ function Account({ handleLogout }: AccountProps) {
       const token = localStorage.getItem('token');
       
       // On envoi la requête DELETE qui supprimera les données du compte
-      await axios.delete('https://o-shop-back.onrender.com/account', {
+      await axios.delete('http://localhost:3000/account', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

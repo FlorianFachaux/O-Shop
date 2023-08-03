@@ -54,10 +54,8 @@
   }
   
   .dropdown-item{
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
     font-size: 1.1rem;
+    margin-right: 3.3rem;
     &:hover{
       background-color: vars.$secondColor;
     }
