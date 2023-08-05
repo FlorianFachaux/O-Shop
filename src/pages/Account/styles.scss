@@ -1,17 +1,17 @@
 @use '../../styles/vars';
 
 .profile{
-  background-color: vars.$pageBlue;
-  color: vars.$mainBlue;
+  background-color: #DAFBF1;
+  color: vars.$mainColor;
   display: flex;
   letter-spacing: 0.1rem;
+  padding:2rem;
   &__leftside{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: vars.$headerBlue;
-    color:vars.$font-color;
-    margin:2rem;
+    background-color: vars.$mainColor;
+    color:white;
     padding: 1.5rem;
     font-size: 1.5rem;
     line-height: 1.2rem;
@@ -56,7 +56,7 @@
     width:30rem;
     height:8rem;
     margin: 2.5rem 0;
-    border: 2px solid vars.$mainBlue;
+    border: 2px solid vars.$mainColor;
     text-align: center;
     box-shadow: 3px 3px 4px black;
 
@@ -109,24 +109,24 @@
 // CSS de la modal de modification du profil
 .modal{
   line-height: 1.5rem;
-  background-color: vars.$pageBlue;
-  border: 2px solid vars.$mainBlue;
+  background-color: vars.$secondColor;
+  border: 2px solid vars.$mainColor;
   font-weight: 600;
   &__header{
-    background-color: vars.$headerBlue;
-    color: vars.$mainBlue;
+    background-color: vars.$mainColor;
+    color: vars.$mainColor;
   }
   &__body{
   display: flex;
   flex-direction: column;
   font-size: 1.3rem;
-  background-color: vars.$pageBlue;
-  color:vars.$mainBlue;
+  background-color: vars.$secondColor;
+  color:vars.$mainColor;
   line-height: 1.3rem;
   padding:1.5rem;
   }
   &__footer{
-    background-color: vars.$headerBlue;
+    background-color: vars.$mainColor;
     color: vars.$font-color;
     display: flex;
     flex-direction: column;
@@ -135,7 +135,7 @@
   &__button{
     font-size: 1.3rem;
     margin-top: 3rem;
-    background: vars.$mainBlue;
+    background: vars.$mainColor;
     color: vars.$font-color;
     transition: 0.1s;
     letter-spacing: 0.2rem;
@@ -157,7 +157,7 @@
   }
 }
 #button__delete{
-  background-color: vars.$mainRed;
+  background-color: vars.$secondColor;
 }
 
 // RESPONSIVE \\

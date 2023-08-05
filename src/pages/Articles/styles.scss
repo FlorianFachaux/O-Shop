@@ -60,3 +60,24 @@
     }
   }
 }
+
+ /* Media Queries for Tablet and Mobile */
+ @media only screen and (max-width: 768px) {
+  .articles__filters-research {
+    width: 100%; /* Take full width on smaller screens */
+  }
+
+  .articles__container {
+    padding: 3rem 1rem; /* Adjust padding for smaller screens */
+  }
+
+  .articles__card-wrap {
+    grid-template-columns: repeat(2, 1fr); /* Show two cards per row on tablets */
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .articles__card-wrap {
+    grid-template-columns: repeat(1, 1fr); /* Show one card per row on mobile devices */
+  }
+}

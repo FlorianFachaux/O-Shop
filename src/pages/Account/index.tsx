@@ -47,6 +47,7 @@ function Account({ handleLogout }: AccountProps) {
         setUserPromo(userData.promo);
         setUserEmail(userData.email);
         setUserPhone(userData.phone);
+        setUserPassword(userData.password);
       } catch (error) {
         console.error(error);
       }
@@ -71,6 +72,8 @@ function Account({ handleLogout }: AccountProps) {
         address: userAddress,
         promo: userPromo,
         phone: userPhone,
+        email: userEmail,
+        password: userPassword,
       };
       // On effectue la requête patch pour l'envoi des données à la base de données
       await axios.patch('https://o-shop-back.onrender.com/account', userData, {
@@ -200,7 +203,16 @@ function Account({ handleLogout }: AccountProps) {
                 id="email"
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
-                disabled
+              />
+            </div>
+            <div className="modal__part">
+              <label htmlFor="password">Mot de passe</label>
+              <input
+                type="password"
+                className="modal__input"
+                id="password"
+                value={userPassword}
+                onChange={(e) => setUserPassword(e.target.value)}
               />
             </div>
             <div className="modal__part">
