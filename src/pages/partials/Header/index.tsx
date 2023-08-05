@@ -20,6 +20,15 @@ function Header({ isLogged, handleLogout }: HeaderProps) {
   const { state } = useContext(CartContext);
   const cartItemCount = state.reduce((total: number, article: Article) => total + article.quantity, 0);
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleDropdownItemClick = () => {
+    setShowDropdown(false);
+  };
   return (
     <header className="header">
       <Link to="/" className="header__logo">

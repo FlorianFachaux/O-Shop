@@ -1,6 +1,6 @@
 @use '../../../styles/vars';
 
-.footerContainer {
+.footer {
   background-color: vars.$mainColor;
   display: flex;
   align-items: center;
@@ -9,76 +9,24 @@
   color: white;
   font-weight: 400;
   height:8.5vh;
-}
-
-.icon {
-  height: 2rem;
-  width: 2rem;
-}
-
-.iconsContainer {
-  display: flex;
-  gap: 2rem;
-}
-
-.textAndIcons {
-  display: flex;
-  gap: 2rem;
-}
-
-.legalMentionsList {
-  margin-bottom: 0.4rem;
-}
-
-.text {
-  display: flex;
-  align-items: center;
-}
-
-@media screen and (max-width: 850px) {
-
-.iconsContainer {
-  gap : 0.4rem;
-}
-
-.footerContainer {
-  padding: 3rem 3rem ;
-}
-.textAndIcons {
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-
-}
-
-
-// Phone size
-@media screen and (max-width: 520px) {
-
-  .footerContainer {
-    padding: 3rem 0;
-    font-size: 0.9rem;
-  }
-
-  .iconsContainer {
-    gap: 0
-  }
-  .logo{
-    height:3rem;
-  }
-  .mentionList {
-    padding-right: 0.5rem
-  }
-
-  .textAndIcons {
-    flex-direction: column;
+  &__contact{
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+
+    &-title{
+      padding-right: 2rem;
+    }
   }
-  .icon {
-    height: 1.5rem;
-    width: 1.5rem;
+  &__icon{
+    height:2rem;
+  }
+  &__links{
+    display: flex;
+    flex-direction: column;
+
+    &-item{
+      padding:0.2rem;
+    }
   }
 }

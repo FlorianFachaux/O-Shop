@@ -13,32 +13,23 @@ function Footer() {
     setShowModal(false);
   };
   return (
-    <div className="footerContainer">
-      <div className="textAndIcons">
-        <div className="text">
-          <p>Nous contacter:</p>
-        </div>
-        <div className="iconsContainer">
-          <img className="icon mailIcon" src={mailIcon} alt="" />
-          <img className="icon facebookIcon" src={facebookIcon} alt="" />
-          <img className="icon twitterIcon" src={twitterIcon} alt="" />
-        </div>
-      </div>
-
-      <ul>
-        <li className="mentionList">
-        <a href="#" className='cgv' onClick={() => setShowModal(true)}>Mention légales</a>
-        </li>
+    <footer className="footer">
+      <section className="footer__contact">
+        <p className="footer__contact-title">Nous contacter</p>
+          <img className="footer__icon" src={mailIcon} alt="" />
+          <img className="footer__icon" src={facebookIcon} alt="" />
+          <img className="footer__icon" src={twitterIcon} alt="" />
+      </section>
+      <section className="footer__links">
+        <a href="#" className="footer__links-item" onClick={() => setShowModal(true)}>Mention légales</a>
         <Modal className='modal' show={showModal} onHide={handleCloseModal}>
           <Modal.Body className='modal__body'>
-            <h1>Laury ipsum dolor sit amet consectetur adipisicing elit. Iste dignissimos dolor corporis exercitationem voluptas doloremque eveniet dolorem repellendus sint! Odio est repellat beatae quo nobis fuga nulla quae a vero!</h1>
+            <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste dignissimos dolor corporis exercitationem voluptas doloremque eveniet dolorem repellendus sint! Odio est repellat beatae quo nobis fuga nulla quae a vero!</h1>
           </Modal.Body>
         </Modal>
-        <li className="mentionList">
-          <a href="#">O&apos;shop</a>
-        </li>
-      </ul>
-    </div>
+        <a href="#" className="footer__links-item">O&apos;shop</a>
+      </section>
+    </footer>
   );
 }
 
