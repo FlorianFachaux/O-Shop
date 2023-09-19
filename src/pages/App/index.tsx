@@ -1,9 +1,8 @@
 import './styles.scss';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useEffect, useState, useContext } from 'react';
-import { CartContext } from '../../context/Context';
-import Header from '../partials/Header';
-import Footer from '../partials/Footer';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import Homepage from '../Homepage';
 import Login from '../Login';
 import Signup from '../Signup';
@@ -13,39 +12,57 @@ import Cart from '../Cart';
 import Detail from '../Detail';
 import Checkout from '../Checkout';
 import Error from '../Error';
-import BackOfficePage from '../BackOffice';
-// import AddArticle from '../AddArticle';
+import BackOffice from '../BackOffice';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../Redux/types';
+import { addToCartAction, removeItemAction, decreaseQuantityAction, increaseQuantityAction, resetCartAction, loginAction, logoutAction } from '../../Redux/actions';
+import Cookies from 'js-cookie';
+import { IArticle } from '../../@types/article';
 
 function App() {
   // Managing the connection status in the navigation
-  const [isLogged, setIsLogged] = useState(false);
-  const { resetCart } = useContext(CartContext);
+  const isLogged = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const dispatch = useDispatch();
 
-  // This function checks for a token in local storage and, if found, sets up axios headers for authentication and indicates user login.
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setIsLogged(true);
-    }
-  }, []);
-
-  // This function checks for the token in local storage and set isLogged to true to display the online Header
+  // This function handles the login action
   const handleLogin = () => {
-    localStorage.getItem('token');
-    setIsLogged(true);
+    dispatch(loginAction());
     console.log('Logged');
   };
-
-  // This functioin is used to remove the current token and reset the userCard after user's logout
+  
+  // This function handles the logout action
   const handleLogout = () => {
-    setIsLogged(false);
-    localStorage.removeItem('token');
-    axios.defaults.headers.common['Authorization'] = '';
-    resetCart();
+    dispatch(logoutAction());
+    Cookies.remove('authToken');
     console.log('Logged out');
   };
+
+  // This function checks for a tokens in Cookies
+  useEffect(() => {
+    const authToken = Cookies.get('authToken');
+    if (authToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+      dispatch(loginAction());
+    }
+    const cartTokenCookie = Cookies.get('cartToken');
+    
+    if (cartTokenCookie) {
+      const cartItems: IArticle[] = JSON.parse(decodeURIComponent(cartTokenCookie)); // Spécifiez le type IArticle
+      cartItems.forEach((item: IArticle) => { // Spécifiez le type IArticle
+        dispatch(addToCartAction(item));
+      });
+    }
+  }, [dispatch]);
+
+  const cartItemsJson = JSON.stringify(cartItems);
+
+  // Mettre à jour le cookie dans le useEffect
+  useEffect(() => {
+    Cookies.set('cartToken', encodeURIComponent(cartItemsJson), { expires: 7 });
+  }, [cartItemsJson]);  // Vous pouvez également ajouter `dispatch` dans les dépendances car vous l'utilisez dans le hook useSelector
+
 
   return (
     <div className="app">
@@ -60,7 +77,7 @@ function App() {
           />
           <Route
             path="/admin"
-            element={<BackOfficePage />}
+            element={<BackOffice />}
           />
           <Route path="/articles/:id" element={<Detail />} />
           {/* <Route path="/addarticle" element={<AddArticle />} /> */}

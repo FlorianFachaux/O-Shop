@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
 import './styles.scss';
-import whiteLogo from '../../../assets/images/Footer/logo-yellow.png';
-import mailIcon from '../../../assets/images/Footer/mailIcon.png';
-import facebookIcon from '../../../assets/images/Footer/facebookIcon.png';
-import twitterIcon from '../../../assets/images/Footer/twitterIcon.png';
+import mailIcon from '../../assets/images/Footer/mailIcon.png';
+import facebookIcon from '../../assets/images/Footer/facebookIcon.png';
+import twitterIcon from '../../assets/images/Footer/twitterIcon.png';
 import { Modal } from 'react-bootstrap';
 
 function Footer() {

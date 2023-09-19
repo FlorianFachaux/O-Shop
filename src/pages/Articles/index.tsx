@@ -2,8 +2,10 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { IArticle, User } from '../../@types/article';
-import Article from '../partials/Article';
+import Article from '../../components/Article';
 import './styles.scss';
+import axiosInstance from '../../utils/axios';
+import Cookies from 'js-cookie';
 
 function Articles() {
   const [articles, setArticles] = useState<IArticle[]>([]);
@@ -13,11 +15,11 @@ function Articles() {
     // we get the information from the database to display the list of each item
     const fetchData = async () => {
       try {
-        let url = 'http://localhost:3000/articles';
+        let url = '/articles';
         if (category_slug) {
-          url = `http://localhost:3000/articles/category/${encodeURIComponent(category_slug)}`;
+          url = `/articles/category/${encodeURIComponent(category_slug)}`;
         }
-        const articlesResponse = await axios.get(url);
+        const articlesResponse = await axiosInstance.get(url);
         setArticles(articlesResponse.data);
       } catch (error) {
         console.log(error);
@@ -33,8 +35,8 @@ function Articles() {
     // We check that the connected user is an admin
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/account', {
+        const token = Cookies.get('authToken');
+        const response = await axiosInstance.get('/account', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

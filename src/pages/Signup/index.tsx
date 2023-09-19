@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import userSchema from '../../utils';
 import './styles.scss';
 import { useState } from 'react';
+import axiosInstance from '../../utils/axios';
 
 // This variable is used to define what are the specificities of each field with formiks help
 const SignupSchema = Yup.object().shape({
@@ -15,6 +16,8 @@ const SignupSchema = Yup.object().shape({
     .matches(/^[0-9]{10}$/, 'Le numéro de téléphone doit comporter 10 chiffres')
     .required('Champs requis'),
   address: Yup.string().required('Champ requis'),
+  city: Yup.string().required('Champ requis'),
+  postalCode: Yup.string().required('Champ requis'),
   email: userSchema.fields.email,
   password: userSchema.fields.password,
 });
@@ -23,6 +26,8 @@ interface SignupFormValues {
   firstname: string;
   lastname: string;
   address: string;
+  city: string;
+  postalCode: string;
   phone: string;
   email: string;
   password: string;
@@ -32,6 +37,8 @@ const initialValues = {
   firstname: '',
   lastname: '',
   address: '',
+  city: '',
+  postalCode: '',
   phone: '',
   email: '',
   password: '',
@@ -50,8 +57,8 @@ function Signup(): JSX.Element {
   ) => {
     try {
       // get email response from database.
-      const emailCheckResponse = await axios.get(
-        `http://localhost:3000/check-email?email=${values.email}`
+      const emailCheckResponse = await axiosInstance.get(
+        `/check-email?email=${values.email}`
       );
       if (emailCheckResponse.data.exists === true) {
         // If the email already exists in the database, print error :
@@ -60,8 +67,8 @@ function Signup(): JSX.Element {
         setIsFormSubmitted(true);
       } else {
         // If the email does not exist, proceed with the signup
-        const signupResponse = await axios.post(
-          'http://localhost:3000/signup',
+        const signupResponse = await axiosInstance.post(
+          '/signup',
           values
         );
         console.log(signupResponse.data); // Log the API response
@@ -123,6 +130,32 @@ function Signup(): JSX.Element {
               />
               <ErrorMessage
                 name="address"
+                component="div"
+                className="form__error"
+              />
+            </div>
+            <div className="form__input--container">
+              <Field
+                className="form__input--city"
+                type="text"
+                name="city"
+                placeholder="Ville"
+              />
+              <ErrorMessage
+                name="city"
+                component="div"
+                className="form__error"
+              />
+            </div>
+            <div className="form__input--container">
+              <Field
+                className="form__input--postalCode"
+                type="text"
+                name="postalCode"
+                placeholder="Code Postale"
+              />
+              <ErrorMessage
+                name="postalCode"
                 component="div"
                 className="form__error"
               />

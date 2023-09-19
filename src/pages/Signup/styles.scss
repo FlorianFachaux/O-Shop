@@ -7,6 +7,8 @@
   color: vars.$mainColor;
   text-align: center;
   justify-content: center;
+  min-height: 100vh;
+  padding-bottom: 3rem;;
   
   &__container {
     display: flex;

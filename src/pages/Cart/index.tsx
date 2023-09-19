@@ -1,49 +1,55 @@
-import './styles.scss';
-import { useContext } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { CartContext } from '../../context/Context';
+import React, { useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { ADD_TO_CART, DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ITEM, RootState } from '../../Redux/types';
+import { IArticle } from '../../@types/article';
 import plus from '../../assets/images/Cart/plus.png';
 import minus from '../../assets/images/Cart/minus.png';
-import remove from '../../assets/images/Cart/delete.png';
-
-interface Article {
-  id: number;
-  image: string;
-  title: string;
-  price: number;
-  quantity: number;
-}
+import './styles.scss';
+import Cookies from 'js-cookie';
 
 function Cart() {
-  // Get the cart state and dispatch function from the CartContext
-  const { state, dispatch } = useContext(CartContext);
-  // Calculate the total cart value by multiplying each article's price with its quantity and summing them up
-  const cartTotal = state.reduce(
-    (total: number, article: Article) => total + article.price * article.quantity,
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+
+  const updateCartCookie = () => {
+    Cookies.set('cartToken', JSON.stringify(cartItems), { expires: 7 }); // 'cart' est le nom du cookie
+  };
+  
+  const cartTotal = cartItems.reduce(
+    (total: number, article: IArticle) => total + (article.price || 0) * (article.quantity || 0),
     0
   );
 
-  // Decrease the quantity of an article in the cart
-  const handleDecreaseQuantity = (article: Article) => {
-    if (article.quantity > 1) {
-      dispatch({ type: 'DECREASE', payload: article });
-    } else {
-      dispatch({ type: 'REMOVE', payload: article });
+  const handleDecreaseQuantity = (article: IArticle) => {
+    dispatch({ type: DECREASE_QUANTITY, payload: article });
+    updateCartCookie();
+  };
+  
+  const handleIncreaseQuantity = (article: IArticle) => {
+    dispatch({ type: INCREASE_QUANTITY, payload: article });
+    updateCartCookie();
+  };
+  
+  const handleRemoveItem = (article: IArticle) => {
+    dispatch({ type: REMOVE_ITEM, payload: article });
+    const updatedCartItems = cartItems.filter(item => item.id !== article.id);
+    updateCartCookie();
+  };
+
+  useEffect(() => {
+    const cartCookie = Cookies.get('cart');
+    if (cartCookie) {
+      const parsedCart = JSON.parse(cartCookie);
+      parsedCart.forEach((item: IArticle) => {
+        dispatch({ type: ADD_TO_CART, payload: item });
+      });
     }
-  };
+    updateCartCookie();
+  }, []);
+  
 
-   // Increase the quantity of an article in the cart
-  const handleIncreaseQuantity = (article: Article) => {
-    dispatch({ type: 'INCREASE', payload: article })
-  };
-
-  // Remove an article from the cart
-  const handleRemoveItem = (article: Article) => {
-    dispatch({ type: 'REMOVE', payload: article });
-  };
-
-   // Render empty cart message when cart is empty
-  if (state.length === 0) {
+  if (cartItems.length === 0) {
     return (
       <section className="cart">
         <div className="cart__container">
@@ -55,10 +61,7 @@ function Cart() {
             Me connecter
           </Link>
           <NavLink to="/articles">
-            <button
-              className="cart__button-empty"
-              type="button"
-            >
+            <button className="cart__button-empty" type="button">
               Trouver des articles
             </button>
           </NavLink>
@@ -66,6 +69,7 @@ function Cart() {
       </section>
     );
   }
+
   return (
     <section className="cart">
       <div className="cart__container">
@@ -87,7 +91,7 @@ function Cart() {
               </div>
 
               <div className="cart__details">
-                {state.map((article: Article) => (
+                {cartItems.map((article: IArticle) => (
                   <div key={article.id} className="cart__details-items">
                     <div className="cart__details-description">
                       <img
@@ -137,16 +141,12 @@ function Cart() {
                           className="cart__quantity-button"
                           type="button"
                         >
-                          <img
-                            className="cart__quantity-button--item cart__quantity--remove-button"
-                            src={remove}
-                            alt="delete"
-                          />
+                          Supprimer
                         </button>
                       </div>
                     </div>
                     <div className="cart__details-total">
-                      {article.quantity * article.price}€ {/* Calculate and display the total cost of the article */}
+                      {(article.quantity ?? 0) * (article.price || 0)}€
                     </div>
                   </div>
                 ))}
@@ -154,7 +154,7 @@ function Cart() {
             </div>
           </form>
           <section className="cart__summary">
-            {state.length > 0 && (
+            {cartItems.length > 0 && (
               <div className="cart__summary-wrap">
                 <h2 className="cart__summary-title">Recapitulatif:</h2>
                 <div className="cart__summary-subtotal">
@@ -167,7 +167,6 @@ function Cart() {
                   </div>
                 </div>
                 <hr />
-
                 <div className="cart__summary-total">
                   <div className="cart__summary--item">Total</div>
                   <div className="cart__summary--price">{cartTotal} €</div>

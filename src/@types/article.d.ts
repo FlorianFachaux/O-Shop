@@ -22,6 +22,8 @@ export interface User{
   lastname?: string;
   email?: string;
   address?: string;
+  city?: string;
+  postalCode?: string;
   phone?: string;
   role?: string;
   promo?: string;

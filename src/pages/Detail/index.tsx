@@ -1,18 +1,19 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../utils/axios';
 import './styles.scss';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IArticle } from '../../@types/article';
-import { CartContext } from '../../context/Context';
+import { addToCartAction } from '../../Redux/actions';
 import { Modal } from 'react-bootstrap';
 import { User } from '../../@types/article';
+import axiosInstance from '../../utils/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../Redux/types';
 
 function Detail() {
   const [detail, setDetail] = useState<IArticle | undefined>();
   const [addedToCart, setAddedToCart] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const Globalstate = useContext(CartContext);
-  const { dispatch } = Globalstate;
   const [quantity, setQuantity] = useState<number>(0);
   const [articleName, setArticleName] = useState(detail?.article_name || '');
   const [articleExcerpt, setArticleExcerpt] = useState(detail?.excerpt || '');
@@ -23,7 +24,7 @@ function Detail() {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const articleResponse = await axios.get(`http://localhost:3000/articles/${id}`);
+        const articleResponse = await axiosInstance.get(`/articles/${id}`);
         setDetail(articleResponse.data);
         setQuantity(articleResponse.data.quantity);
         setArticleName(articleResponse.data.article_name);
@@ -46,7 +47,7 @@ function Detail() {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/account', {
+        const response = await axiosInstance.get('/account', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,13 +66,18 @@ function Detail() {
   
   const [showAddedToCart, setShowAddedToCart] = useState(false);
   // On gère l'ajout de l'article dans le panier
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  
   const handleAddToCart = () => {
-    dispatch({ type: 'ADD', payload: detail });
-    setAddedToCart(true);
-
-    setTimeout(() => {
-      setAddedToCart(false);
-    }, 3500);
+    if (detail) {
+      dispatch(addToCartAction(detail)); // Dispatchez votre action avec les détails de l'article
+      setAddedToCart(true);
+      console.log(detail);
+      setTimeout(() => {
+        setAddedToCart(false);
+      }, 3500);
+    }
   };
 
   return (

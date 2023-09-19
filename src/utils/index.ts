@@ -10,6 +10,9 @@ const userSchema = yup.object().shape({
     .matches(/[0-9]/, 'Le mot de passe doit contenir un chiffre')
     .matches(/[a-z]/, 'Le mot de passe doit contenir une lettre minuscule')
     .matches(/[A-Z]/, 'Le mot de passe doit contenir une lettre majuscule'),
+  address: yup.string().required('Champ requis'),
+  city: yup.string().required('Champ requis'),
+  postalCode: yup.string().required('Champ requis'),
   phone: yup
     .string()
     .matches(/^[0-9]{10}$/, 'Le numéro de téléphone doit comporter 10 chiffres')

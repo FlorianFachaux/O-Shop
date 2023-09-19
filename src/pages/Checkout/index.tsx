@@ -1,8 +1,7 @@
 import './styles.scss';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useContext, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCreditCard,
@@ -11,10 +10,14 @@ import {
   faLock,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { CartContext } from '../../context/Context';
 import paiementSchema from '../../utils/paiementSchema';
 import { IArticle } from '../../@types/article';
 import { Modal } from 'react-bootstrap';
+import axiosInstance from '../../utils/axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../Redux/types';
+import { resetCartAction } from '../../Redux/actions';
+import Cookies from 'js-cookie';
 
 interface PaiementFormValues {
   lastName: string;
@@ -51,19 +54,20 @@ function Checkout() {
   });
 
   // here we use cartcontext to dynamically modify the summary of the items to be purchased
-  const { state } = useContext(CartContext);
-  const { resetCart } = useContext(CartContext);
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const dispatch = useDispatch();
 
   // We use a forEach to calculate the sum of all articles prices
-  let totalPrice = 0;
-  state.forEach((article: IArticle) => {
-    totalPrice += article.price! * article.quantity!;
-  });
+  const totalPrice = cartItems.reduce(
+    (total: number, article: IArticle) =>
+      total + (article.price! * article.quantity!),
+    0
+  );
 
-  let totalQuantity = 0;
-  state.forEach((article: IArticle) => {
-    totalQuantity += article.quantity!;
-  });
+  const totalQuantity = cartItems.reduce(
+    (total: number, article: IArticle) => total + article.quantity!,
+    0
+  );
   const [userLastName, setUserLastName] = useState('');
   const [userAddress, setUserAddress] = useState('');
   const [showWaitingModal, setShowWaitingModal] = useState(false);
@@ -80,10 +84,10 @@ function Checkout() {
 
   // We look to the connected user's address and name
   const fetchData = async () => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('authToken');
 
     try {
-      const response = await axios.get('http://localhost:3000/account', {
+      const response = await axiosInstance.get('/account', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,15 +106,14 @@ function Checkout() {
     event.preventDefault();
     setShowWaitingModal(true);
 
-    await sleepTime(3000); // time during which the code wait
+    await sleepTime(3000);
 
     setShowWaitingModal(false);
     setHidePaiementContainer(true);
     setShowSuccessModal(true);
 
-    // after a delay of 4s, we'll be redirected to homePage
     await sleepTime(4000);
-    resetCart();
+    dispatch(resetCartAction()); // Utilisation de la fonction resetCartAction avec useDispatch
     return navigate('/');
   };
 
@@ -140,7 +143,7 @@ function Checkout() {
           </tr>
         </thead>
         <tbody>
-          {state.map((article: IArticle) => (
+          {cartItems.map((article: IArticle) => (
             <tr key={article.id}>
               <td>{article.article_name}</td>
               <td>{article.quantity}</td>
@@ -151,7 +154,7 @@ function Checkout() {
 
         <tfoot>
           <tr>
-            <td>{`Total des articles : ${state.length}`}</td>
+            <td>{`Total des articles : ${cartItems.length}`}</td>
             <td>{`${totalQuantity}`}</td>
             <td>{`Prix total : ${totalPrice} €  TTC`}</td>
           </tr>

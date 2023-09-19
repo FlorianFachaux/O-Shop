@@ -1,306 +1,73 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
-import './styles.scss'
+import React, { useEffect, useState } from "react";
+import AddArticle from "./AddArticle";
+import axios from "axios";
+import { IArticle, User } from "../../@types/article";
+import EditArticle from "./EditArticle";
+import DeleteArticle from "./DeleteArticle";
+import axiosInstance from "../../utils/axios";
+import Cookies from "js-cookie";
 
-// Définition du type de données pour un article
-interface Article {
-  id: number;
-  article_name: string;
-  category_id: number;
-  quantity: number;
-  excerpt: string;
-  description: string;
-  image: string;
-  price: number;
-}
-
-// Ici, on définit le type des valeurs du formulaire
-interface FormValues {
-  article_name: string;
-  category_id: number;
-  quantity: number;
-  excerpt: string;
-  description: string;
-  image: string;
-  price: number;
-}
-
-const categories = [
-  { id: 1, name: '1 : vêtement' },
-  { id: 2, name: '2 : tasse & mug' },
-  { id: 3, name: '3 : accessoire' },
-  { id: 4, name: '4 : Thermos' },
-];
-
-function BackOfficePage() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+function Backoffice() {
+  const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [formValues, setFormValues] = useState<FormValues>({
-    article_name: "",
-    category_id: 0,
-    quantity: 0,
-    excerpt: "",
-    description: "",
-    image: "",
-    price: 0,
-  });
-  const [messageIsHidden, setMessageIsHidden] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [articles, setArticles] = useState<IArticle[]>([]);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/account', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUser(response.data);
-        setIsAdmin(response.data.userConnected.isAdmin);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données utilisateur:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/articles');
-        setArticles(response.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchArticles();
-  }, []);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
+  const fetchUser = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/articles', formValues);
-      console.log('Article successfully added', response.data);
-      setMessageIsHidden(!messageIsHidden);
-      const newArticle = response.data;
-      setTimeout(() => {
-        navigate(`/articles/${newArticle.id}`);
-      }, 2000);
-    } catch (error) {
-      console.error('Error during article adding', error);
-    }
-  };
-
-  const [showModal, setShowModal] = useState(false);
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const { id } = useParams<{ id: string }>();
-  const [detail, setDetail] = useState<Article | undefined>();
-  const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const articleResponse = await axios.get(`http://localhost:3000/articles/${id}`);
-        setDetail(articleResponse.data);
-        setFormValues({
-          article_name: articleResponse.data.article_name,
-          category_id: articleResponse.data.category_id,
-          quantity: articleResponse.data.quantity,
-          excerpt: articleResponse.data.excerpt,
-          description: articleResponse.data.description,
-          image: articleResponse.data.image,
-          price: articleResponse.data.price.toString(),
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchArticle();
-  }, [id]);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleEditData = async () => {
-    try {
-      const token = localStorage.getItem('token');
-
-      // Vérifier si un article est sélectionné pour la modification
-      if (selectedArticleId === null) {
+      const token = Cookies.get('authToken');
+      if (!token) {
+        setError("Vous devez être connecté pour accéder à cette page.");
         return;
       }
 
-      // Préparation des données avant l'envoi des données au Back
-      const articleData = {
-        article_name: formValues.article_name,
-        excerpt: formValues.excerpt,
-        description: formValues.description,
-        price: parseFloat(formValues.price.toString()),
-        image: formValues.image,
-      };
-
-      // Envoi de la requête PATCH qui mettra les données à jour
-      await axios.patch(`http://localhost:3000/articles/${selectedArticleId}`, articleData, {
+      const response = await axiosInstance.get("/account", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // Fermeture de la modal à l'envoi de la requête
-      handleCloseModal();
-      window.location.reload();
+      const userData = response.data;
+      setUser(userData);
+      setIsAdmin(userData.userConnected.isAdmin);
     } catch (error) {
-      console.error(error);
+      setError("Une erreur s'est produite lors de la récupération des données utilisateur.");
     }
   };
 
-  const handleDeleteArticle = async (id: number) => {
+  const fetchArticles = async () => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3000/articles/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      navigate('/articles');
+      const articlesResponse = await axiosInstance.get("/articles");
+      setArticles(articlesResponse.data);
+      setIsLoading(false);
     } catch (error) {
-      console.error(error);
+      setError("Erreur lors de la récupération des articles.");
     }
   };
 
-  const handleConfirmDelete = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3000/articles/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      navigate('/articles');
-      setShowConfirmationModal(false); // Fermer la modal de confirmation après la suppression
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    fetchUser();
+    fetchArticles();
+  }, []);
 
   return (
-    <div className="backoffice">
-      {isAdmin ? (
+    <main className="backoffice">
+      {error ? (
+        <h2 className="message__error">{error}</h2>
+      ) : isLoading ? (
+        <h2>Loading...</h2>
+      ) : isAdmin ? (
         <>
-          <section className="backoffice__add">
-            <div className="backoffice__title">Ajouter un article</div>
-            <form className="backoffice__form" onSubmit={handleSubmit}>
-              <div className="backoffice__grid">
-                <div className="backoffice__form-part">
-                  <p>Nom de l'article</p>
-                  <input
-                    type="text"
-                    className="backoffice__form-input"
-                    placeholder="String"
-                    value={formValues.article_name}
-                    name="article_name"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="backoffice__form-part">
-                  <label htmlFor="category-select">Catégorie</label>
-                  <select
-                    id="category-select"
-                    className="backoffice__category-select"
-                    value={formValues.category_id}
-                    name="category_id"
-                    onChange={handleChange}
-                  >
-                    <option value="">Sélectionnez une catégorie</option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="backoffice__form-part">
-                  <p>Quantité</p>
-                  <input
-                    type="number"
-                    value={formValues.quantity}
-                    className="backoffice__form-input"
-                    placeholder="Number"
-                    name="quantity"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="backoffice__form-part">
-                  <p>Description rapide</p>
-                  <input
-                    type="text"
-                    value={formValues.excerpt}
-                    className="backoffice__form-input"
-                    placeholder="String"
-                    name="excerpt"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="backoffice__form-part">
-                  <p>description détaillée</p>
-                  <input
-                    type="text"
-                    value={formValues.description}
-                    className="backoffice__form-input"
-                    placeholder="String"
-                    name="description"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="backoffice__form-part">
-                  <p>Image</p>
-                
-                  <input
-                    type="text"
-                    value={formValues.image}
-                    className="backoffice__form-input"
-                    placeholder="String"
-                    name="image"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="backoffice__form-part">
-                  <p>Prix</p>
-                  <input
-                    type="number"
-                    value={formValues.price}
-                    className="backoffice__form-input"
-                    placeholder="number"
-                    name="price"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <input type="submit" value="Ajouter" className="backoffice__submitForm" />
-            </form>
+          <section className="add">
+            <AddArticle />
           </section>
-          <div className="backoffice__actions">
-            <div className="backoffice__title">Modifier ou Supprimer un article</div>
+          <section className="edit">
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Nom du produit</th>
+                  <th>Nom de l'article</th>
                   <th>Modifier</th>
                   <th>Supprimer</th>
                 </tr>
@@ -311,115 +78,24 @@ function BackOfficePage() {
                     <td>{article.id}</td>
                     <td>{article.article_name}</td>
                     <td>
-                      <button
-                        className='edit__button'
-                        onClick={() => {
-                          setShowModal(true);
-                          setSelectedArticleId(article.id); // Définir l'id de l'article sélectionné
-                        }}
-                      >
-                        Modifier
-                      </button>
+                      {article.id !== undefined && <EditArticle articleId={article.id} />}
                     </td>
                     <td>
-                      <button
-                        className='delete__button'
-                        onClick={() => {
-                          handleDeleteArticle(article.id); // Passer l'id de l'article à la fonction de suppression
-                        }}
-                      >
-                        Supprimer
-                      </button>
+                    {article.id !== undefined && <DeleteArticle articleId={article.id} />}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-          <Modal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)} className='modal'>
-            <Modal.Header closeButton className='modal__header'>
-              <Modal.Title>Confirmation de suppression</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='modal__body'>
-              Êtes-vous sûr de vouloir supprimer cet article ?
-            </Modal.Body>
-            <Modal.Footer className='modal__footer'>
-              <button className='modal__button' onClick={() => setShowConfirmationModal(false)}>
-                Annuler
-              </button>
-              <button className='modal__button' onClick={handleConfirmDelete}>
-                Supprimer
-              </button>
-            </Modal.Footer>
-          </Modal>
-          <Modal show={showModal} onHide={() => setShowModal(false)} className='modal'>
-            <Modal.Header className='modal__header' closeButton>
-              <Modal.Title>Modifier l'article</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='modal__body'>
-              <label>Nom</label>
-              <input
-                type="text"
-                value={formValues.article_name}
-                onChange={handleChange}
-                placeholder={detail?.article_name || ''}
-                className='modal__input'
-                name="article_name"
-              />
-              <label>Image (url)</label>
-              <input
-                type="text"
-                value={formValues.image}
-                onChange={handleChange}
-                placeholder={detail?.image || ''}
-                className='modal__input'
-                name="image"
-              />
-              <label>Extrait</label>
-              <input
-                type="text"
-                value={formValues.excerpt}
-                onChange={handleChange}
-                placeholder={detail?.excerpt || ''}
-                className='modal__input'
-                name="excerpt"
-              />
-              <label>Description</label>
-              <input
-                type="text"
-                value={formValues.description}
-                onChange={handleChange}
-                placeholder={detail?.description || ''}
-                className='modal__input'
-                name="description"
-              />
-              <label>Prix</label>
-              <input
-                type="number"
-                value={formValues.price}
-                onChange={handleChange}
-                placeholder={detail?.price.toString() || ''}
-                className='modal__input'
-                name="price"
-              />
-            </Modal.Body>
-            <Modal.Footer className='modal__footer'>
-              <button className='modal__button' onClick={() => setShowModal(false)}>
-                Annuler
-              </button>
-              <button className='modal__button' onClick={handleEditData}>
-                Enregistrer
-              </button>
-            </Modal.Footer>
-          </Modal>
+          </section>
         </>
       ) : (
         <h2 className="message__access-denied">
           Accès non autorisé. Vous devez être administrateur pour accéder à cette page.
         </h2>
       )}
-    </div>
+    </main>
   );
 }
 
-export default BackOfficePage;
+export default Backoffice;

@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '../../@types/article';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleUp, faAt, faBoxOpen, faCreditCard, faPhone } from '@fortawesome/free-solid-svg-icons';
+import axiosInstance from '../../utils/axios';
+import Cookies from 'js-cookie';
 
 interface AccountProps {
   handleLogout: () => void;
@@ -22,6 +24,8 @@ function Account({ handleLogout }: AccountProps) {
   const [userFirstname, setUserFirstname] = useState('');
   const [userLastname, setUserLastname] = useState('');
   const [userAddress, setUserAddress] = useState('');
+  const [userCity, setUserCity] = useState('');
+  const [userPostalCode, setUserPostalCode] = useState('');
   const [userPromo, setUserPromo] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -30,10 +34,10 @@ function Account({ handleLogout }: AccountProps) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('authToken');
 
       try {
-        const response = await axios.get('https://o-shop-back.onrender.com/account', {
+        const response = await axiosInstance.get('/account', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,10 +48,14 @@ function Account({ handleLogout }: AccountProps) {
         setUserFirstname(userData.firstname);
         setUserLastname(userData.lastname);
         setUserAddress(userData.address);
+        setUserCity(userData.city);
+        setUserPostalCode(userData.postalCode);
         setUserPromo(userData.promo);
         setUserEmail(userData.email);
         setUserPhone(userData.phone);
         setUserPassword(userData.password);
+
+        console.log(userData);
       } catch (error) {
         console.error(error);
       }
@@ -64,19 +72,21 @@ function Account({ handleLogout }: AccountProps) {
 
   const handleEditData = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('authToken');
 
       const userData = {
         firstname: userFirstname,
         lastname: userLastname,
         address: userAddress,
+        city: userCity,
+        postalCode: userPostalCode,
         promo: userPromo,
         phone: userPhone,
         email: userEmail,
         password: userPassword,
       };
       // On effectue la requête patch pour l'envoi des données à la base de données
-      await axios.patch('https://o-shop-back.onrender.com/account', userData, {
+      await axiosInstance.patch('/account', userData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -100,10 +110,10 @@ function Account({ handleLogout }: AccountProps) {
 // Modal de confirmation de suppression de compte
   const confirmDeleteAccount = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('authToken');
       
       // On envoi la requête DELETE qui supprimera les données du compte
-      await axios.delete('http://localhost:3000/account', {
+      await axiosInstance.delete('/account', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -111,13 +121,15 @@ function Account({ handleLogout }: AccountProps) {
       setUserFirstname('');
       setUserLastname('');
       setUserAddress('');
+      setUserCity('');
+      setUserPostalCode('');
       setUserPromo('');
       setUserEmail('');
       setUserPhone('');
       setUserPassword('');
       setUserEmail('');
       
-      localStorage.removeItem('token');
+      Cookies.remove('authToken');
       handleLogout();
       navigate('/');
     } catch (error) {
@@ -186,6 +198,26 @@ function Account({ handleLogout }: AccountProps) {
               />
             </div>
             <div className="modal__part">
+              <label htmlFor="city">Ville</label>
+              <input
+                type="text"
+                className="modal__input"
+                id="city"
+                value={userCity}
+                onChange={(e) => setUserCity(e.target.value)}
+              />
+            </div>
+            <div className="modal__part">
+              <label htmlFor="postalCode">Code postale</label>
+              <input
+                type="text"
+                className="modal__input"
+                id="postalCode"
+                value={userPostalCode}
+                onChange={(e) => setUserPostalCode(e.target.value)}
+              />
+            </div>
+            <div className="modal__part">
               <label htmlFor="promo">Promo</label>
               <input
                 type="text"
@@ -203,16 +235,6 @@ function Account({ handleLogout }: AccountProps) {
                 id="email"
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
-              />
-            </div>
-            <div className="modal__part">
-              <label htmlFor="password">Mot de passe</label>
-              <input
-                type="password"
-                className="modal__input"
-                id="password"
-                value={userPassword}
-                onChange={(e) => setUserPassword(e.target.value)}
               />
             </div>
             <div className="modal__part">

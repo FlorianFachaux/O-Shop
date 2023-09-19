@@ -1,9 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
 
-// Créer une instance d'axios me permettant d'enregistrer une configuration de base
+// Création d'une instance d'axios pour couvrir le projet
 const axiosInstance = axios.create({
-  baseURL: 'https://o-shop-back.onrender.com/',
+  baseURL: 'http://localhost:3000',
 });
 
 export default axiosInstance;

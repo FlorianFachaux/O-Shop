@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
-import { CartContext } from '../../../context/Context';
 import './styles.scss';
 import { Dropdown } from 'react-bootstrap';
-import { ICategory } from '../../../@types/article';
+import { IArticle } from '../../@types/article';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../Redux/types';
 
 type HeaderProps = {
   isLogged: boolean;
@@ -17,8 +18,8 @@ interface Article {
 }
 
 function Header({ isLogged, handleLogout }: HeaderProps) {
-  const { state } = useContext(CartContext);
-  const cartItemCount = state.reduce((total: number, article: Article) => total + article.quantity, 0);
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const cartItemCount = cartItems.reduce((total: number, article: IArticle) => total + (article.quantity || 0), 0);
 
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -29,6 +30,7 @@ function Header({ isLogged, handleLogout }: HeaderProps) {
   const handleDropdownItemClick = () => {
     setShowDropdown(false);
   };
+  
   return (
     <header className="header">
       <Link to="/" className="header__logo">

@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { IArticle } from '../../../@types/article';
-import { faShoppingCart, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { IArticle } from '../../@types/article';
 import './styles.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CartContext } from '../../../context/Context';
+import axiosInstance from '../../utils/axios';
+import { useDispatch } from 'react-redux';
+import { addToCartAction } from '../../Redux/actions';
 
 
 interface ArticleProps {
@@ -14,17 +13,16 @@ interface ArticleProps {
 
 function Article({ article }: ArticleProps) {
   const [articleData, setArticleData] = useState<IArticle>();
-  const { dispatch } = useContext(CartContext);
-
+  const dispatch = useDispatch();
 
   const addToCart = () => {
-    dispatch({ type: 'ADD', payload: article });
+    dispatch(addToCartAction(article));
   };
 
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const response = await axios.get(`http://localhost:3000/articles/${article.id}`);
+        const response = await axiosInstance.get(`/articles/${article.id}`);
         setArticleData(response.data);
       } catch (error) {
         console.log(error);

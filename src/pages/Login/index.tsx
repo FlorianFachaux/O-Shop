@@ -1,18 +1,21 @@
 import './styles.scss';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import userSchema from '../../utils';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../../utils/axios';
+import Cookies from 'js-cookie';
 
 interface LoginProps {
-  handleLogin: (isLogged: boolean) => void;
+  handleLogin: (token: string) => void;
 }
 
 function Login({ handleLogin }: LoginProps) {
   const [isLogged, setIsLogged] = useState(false);
+  const [error, setError] = useState<string>('');
 
-  //We use Formik to manage the status and validation of the login form
+  // Use Formik to manage the status and validation of the login form
   const { values, errors, touched, isSubmitting, handleBlur, handleChange } =
     useFormik({
       initialValues: {
@@ -23,30 +26,45 @@ function Login({ handleLogin }: LoginProps) {
       onSubmit: async () => {},
     });
 
-  const [error, setError] = useState<string>('');
-
   // This function will be executed after the form submission
   const handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('submitted');
     try {
-      const response = await axios.post('http://localhost:3000/login', {
+      const response = await axiosInstance.post('/login', {
         email: values.email,
         password: values.password,
       });
       const { token } = response.data;
-      // We send the token in the localStorage and we store it
-      localStorage.setItem('token', token);
+
+      const handleLoginSuccess = async (token: string) => {
+        Cookies.set('authToken', token, { expires: 7 });
+        const userConnected = response.data.userConnected;
+        if (userConnected) {
+          const isAdmin = userConnected.isAdmin;
+          Cookies.set('isAdmin', isAdmin.toString(), { expires: 7 });
+        }
+        handleLogin(token);
+        setIsLogged(true);
+      };
+
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setIsLogged(true);
-      handleLogin(true);
+      handleLoginSuccess(token);
     } catch (error: any) {
       if (error.response && error.response.status === 500) {
         setError("L'email ou le mot de passe est incorrect.");
       }
-      
     }
   };
+
+  // Check for the presence of the authToken cookie on component mount
+  useEffect(() => {
+    const authToken = Cookies.get('authToken');
+    if (authToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+      setIsLogged(true);
+    }
+  }, []);
+
   return (
     <div className="form">
       <form onSubmit={handleSubmitForm} className="form__container">

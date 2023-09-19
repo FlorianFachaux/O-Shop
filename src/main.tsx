@@ -6,15 +6,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './pages/App';
 // On importe notre fichier de style global
 import './styles/index.scss';
-import { Context } from './context/Context';
+import { Provider } from 'react-redux';
+import store from './Redux/store';
 // Je créer un root pour mon application (a partir d'un élément HTML)
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 // On injecte notre application dans le DOM
 root.render(
   <BrowserRouter>
-      <Context>
-        <App />
-      </Context>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>,
 );
